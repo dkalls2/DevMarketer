@@ -11,7 +11,8 @@ window.Popper = require('popper.js').default;
 try {
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
+    // require('bootstrap');
+       // we do not need this because we are not using bootstrap for this application.
 } catch (e) {}
 
 /**

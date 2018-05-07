@@ -1,14 +1,27 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
 @import "variables";
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+//Font Awesome
+@import "node_modules/font-awesome/scss/font-awesome";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+// Bootstrap
+// @import '~bootstrap/scss/bootstrap';
+  //we do not need this because we are not using the bootstrap framework
+
+// Bulma
+@import "node_modules/bulma/bulma";
+
+//Bulma Vue Modules
+@import "node_modules/buefy/src/scss/buefy";
+
+
+
+// .navbar-laravel {
+//   background-color: #fff;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// }
+  //this is default stuff we do not need.
