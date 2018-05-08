@@ -1,0 +1,57 @@
+//TEXT OVERRIDES
+
+.is-muted {
+  color: $grey-light !important;
+}
+
+a.is-muted:hover {
+    color: $grey !important;
+}
+
+
+
+//NAVBAR OVERRIDES
+
+.navbar{
+    height: 4.5rem;
+}
+
+.navbar-item img {
+    max-height: 2.8rem;
+}
+
+.navbar-item.is-tab {
+    border-bottom: 1px solid transparent;
+    min-height: 3.25rem;
+    padding-bottom: calc(0.5rem - 1px);
+  }
+  
+  .navbar-item.is-tab:hover {
+    background-color: transparent;
+    border-bottom-color: #00d1b2;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    color: #00d1b2;
+    padding-bottom: calc(0.5rem - 3px);
+  }
+  
+  .navbar-item.is-tab.is-active {
+    background-color: transparent;
+    border-bottom-color: #00d1b2;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    color: #00d1b2;
+    padding-bottom: calc(0.5rem - 3px);
+  }
+
+
+//INPUT FIELD OVERRIDES
+.input:focus, .input.is-focused, .input:active, .input.is-active,
+.textarea:focus,
+.textarea.is-focused,
+.textarea:active,
+.textarea.is-active {
+  border-color: #00d1b2;
+  box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+}
+  

@@ -19,6 +19,19 @@
 @import "node_modules/buefy/src/scss/buefy";
 
 
+//Custom SASS Pages
+  //we add this at the bottom so it overrides everything above it.  You generally pull in the framework first and then we want our custom stuff to come after it 
+  //because we want to override certain elements of the framework.
+@import "overrides";
+  //the idea of this file, is that it is used to specifically override something that is in the framework (bootstrap or Bulma). These overrides will inherit all the
+  //the normal stuff from the framework, but just override a few things.
+@import "helpers";
+  //this file is used for the class helpers that people use (margin helpers for example).  most are in framework, but we will add our own here.
+@import "styles";
+  //if it were a huge project, you may break this up into "admin_styles" or "customer_styles" or something, but for now, we will put everything else here.
+
+
+
 
 // .navbar-laravel {
 //   background-color: #fff;
