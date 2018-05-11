@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>DevMarketer</title>
+    <title>DevMarketer - MANAGEMENT</title>
 
     
 
@@ -29,7 +29,11 @@
 </head>
 <body>
     @include('_includes.nav.main')
-    <div id="app">
+
+    @include('_includes.nav.manage')
+
+
+    <div class="management-area" id="app">
         <main class="py-4">
             @yield('content')
         </main>

@@ -995,16 +995,22 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_buefy___default.a);
 //this pulls all of the buefy components.
 //We can't use buefy components straight away because buefy components are vue components and vue components can only be used inside of a vue object. 
 //First we have to create a vue object adn then use those vue components inside of a vue object.  Here is what we need to do:
-var app = new Vue({
-    //this is just creating a general vue app
-    el: '#app',
-    //we are setting this to an element and an element that is really good to set it equal to is this app id.
-    //we want to instantiate this whole app div as a vue object.  Now that it is, everything inside of this id of app is going to be a vue object.
-    //all div's are now a vue object in the app.blade.php file.
-    //we can now put vue components inside the navigation or anywhere else in app.blade.php and they will work because we set up the view object.
-    data: {}
-    //this is just empty data because we don't have a real vue project yet.
-});
+
+
+// var app = new Vue({
+//     //this is just creating a general vue app
+//     el: '#app',
+//         //we are setting this to an element and an element that is really good to set it equal to is this app id.
+//         //we want to instantiate this whole app div as a vue object.  Now that it is, everything inside of this id of app is going to be a vue object.
+//         //all div's are now a vue object in the app.blade.php file.
+//         //we can now put vue components inside the navigation or anywhere else in app.blade.php and they will work because we set up the view object.
+//     data:{
+//         auto_password: true,
+//         password_options: "keep"
+//     }
+//         //this is just empty data because we don't have a real vue project yet.
+// })
+
 
 //we dont need to worry about pulling in the .css file here because we are going to pull that in in our css file.
 

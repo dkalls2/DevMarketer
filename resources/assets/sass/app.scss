@@ -29,8 +29,8 @@
   //this file is used for the class helpers that people use (margin helpers for example).  most are in framework, but we will add our own here.
 @import "styles";
   //if it were a huge project, you may break this up into "admin_styles" or "customer_styles" or something, but for now, we will put everything else here.
-
-
+@import "manage";
+  //this is the css for the manage page.
 
 
 // .navbar-laravel {

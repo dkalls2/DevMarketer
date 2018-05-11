@@ -54,7 +54,7 @@
                         </div>
                     </div>
 
-                    <button class="button is-success is-outlined is-fullwidth m-t-30">Reset Password</button>
+                    <button class="button is-primary is-outlined is-fullwidth m-t-30">Reset Password</button>
                 </form>
             </div> <!-- end of .card-content-->
         </div> <!-- end of .card-->

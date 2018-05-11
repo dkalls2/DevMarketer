@@ -27,7 +27,7 @@
                 @else
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-item is-tab">
-                            <span>Hey Alex</span>
+                            <span>Hey {{Auth::user()->name}}</span>
                             <span class="icon"><i class="fa fa-caret-down"></i></span>
                         </a>
                     
@@ -40,7 +40,7 @@
                                 <span class="icon"><i class="fa fa-fw m-r-10 fa-bell"></i></span>
                                 Notifications
                             </a>
-                            <a href="#" class="navbar-item">
+                            <a href='{{route('manage.dashboard')}}' class="navbar-item">
                                 <span class="icon"><i class="fa fa-fw m-r-10 fa-cog"></i></span>
                                 Manage
                             </a>
