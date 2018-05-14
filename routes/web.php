@@ -29,6 +29,8 @@ Route::prefix('manage')->middleware('role:superadministrator|administrator|edito
         //we are using the manage controller with the "dashboard" action.
         //we create the controller using php artisan make:controller ManageController
     Route::resource('/users','UserController');
+    Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
+    Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

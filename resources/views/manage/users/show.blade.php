@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        {{-- <div class="field">
+        <div class="field">
           <div class="field">
             <label for="email" class="label">Roles</label>
             <ul>
@@ -38,7 +38,7 @@
               @endforelse
             </ul>
           </div>
-        </div> --}}
+        </div>
       </div>
     </div>
   </div>

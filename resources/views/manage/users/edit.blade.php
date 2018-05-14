@@ -47,7 +47,7 @@
           </div>
         </div> <!-- end of .column -->
 
-        {{-- <div class="column">
+        <div class="column">
           <label for="roles" class="label">Roles:</label>
           <input type="hidden" name="roles" :value="rolesSelected" />
 
@@ -56,8 +56,9 @@
                 <b-checkbox v-model="rolesSelected" :native-value="{{$role->id}}">{{$role->display_name}}</b-checkbox>
               </div>
             @endforeach
-        </div> --}}
+        </div>
       </div>
+
       <div class="columns">
         <div class="column">
           <hr />
@@ -75,8 +76,8 @@
     var app = new Vue({
       el: '#app',
       data: {
-        password_options: 'keep'
-        // rolesSelected: {!! $user->roles->pluck('id') !!}
+        password_options: 'keep',
+        rolesSelected: {!! $user->roles->pluck('id') !!}
       }
     });
   </script>
