@@ -8,12 +8,12 @@ window.Popper = require('popper.js').default;
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-    window.$ = window.jQuery = require('jquery');
+// try {
+//     window.$ = window.jQuery = require('jquery');
 
-    // require('bootstrap');
-       // we do not need this because we are not using bootstrap for this application.
-} catch (e) {}
+//     // require('bootstrap');
+//        // we do not need this because we are not using bootstrap for this application.
+// } catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

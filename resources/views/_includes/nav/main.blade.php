@@ -6,6 +6,13 @@
                 {{-- From the asset helper, we can reference anything in the public folder...we can just do the url from the public folder. --}}
             </a>
 
+            @if(Request::segment(1) =="manage")
+                {{-- we only want to show this icon when the first segment of the url (the segment right after the first /) is "manage" --}}
+                <a class="navbar-item is-hidden-desktop" id="admin-slideout-button">
+                    <span class="icon"><i class="fa fa-arrow-circle-o-right"></i></span>
+                </a>
+            @endif
+
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>

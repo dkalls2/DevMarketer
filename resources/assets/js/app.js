@@ -49,3 +49,5 @@ Vue.use(Buefy);
     //     el: '#app'
     // });
         //we dot no need a system wide vue set up, we will set this up on each page, so we do not need this.
+
+require('./manage');

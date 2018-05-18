@@ -188,12 +188,15 @@ return [
          * Method to be called in the middleware return case.
          * Available: abort|redirect
          */
-        'handling' => 'abort',
+        'handling' => 'redirect',
+            //here you can either abort and show an error or you can
+            //redirect and tell it where to redirct to below after 'params'
 
         /**
          * Parameter passed to the middleware_handling method
          */
-        'params' => '403',
+        'params' => '/login',
+            //this tells where to redirect to.
 
     ],
 
