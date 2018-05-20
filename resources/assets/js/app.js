@@ -10,6 +10,13 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+window.Slug = require('slug');
+    //this is bringing in the slug package (https://github.com/dodo/node-slug) as a window component.
+    //this was installed using npm install slug
+Slug.defaults.mode = 'rfc3986';
+    //this just makes the Slug package be set to the url standard...all lower case.
+
+
 //we need to pull in the vue components.  we do that by:
 import Buefy from 'buefy';
 Vue.use(Buefy);
@@ -41,8 +48,13 @@ Vue.use(Buefy);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue'));
-    //we might set up vue components later, but we do not need this example.  
+Vue.component('slugWidget', require('./components/slugWidget.vue'));
+    //this is to add a custom vue component    
+    //this needs to come after we import vue (which is done above)
+    //here we give the component a name and tell it where to find the component.
+
+
+
     //if we were not using all of the compnents for buefy, we could pull them in individually by using the above syntax.
 
     // const app = new Vue({

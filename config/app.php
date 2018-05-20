@@ -161,6 +161,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class,
+            //here we are adding the ObserverServiceProvider we created.  This tells it to load it.
 
         //3rd party service providers
         Laratrust\LaratrustServiceProvider::class,

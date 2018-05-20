@@ -61,7 +61,7 @@
 
       <div class="columns">
         <div class="column">
-          <hr />
+          <hr>
           <button class="button is-primary is-pulled-right" style="width: 250px;">Edit User</button>
         </div>
       </div>

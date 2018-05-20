@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 class LaratrustSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeds.  We do this by typing php artisan db:seed 
      *
      * @return  void
      */
@@ -57,7 +57,11 @@ class LaratrustSeeder extends Seeder
             $user = \App\User::create([
                 'name' => ucwords(str_replace('_', ' ', $key)),
                 'email' => $key.'@app.com',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'api_token' => bin2hex(openssl_random_pseudo_bytes(30))
+                    //this makes sure that an api token is created for every single new user because it is required.  We added this for the application.
+                    //we are going to generate a random 60 char string. 
+                    //The above function generates 30 random byes, makes it cryptographically secure and then converts it to hexadecimals.
             ]);
 
             $user->attachRole($role);

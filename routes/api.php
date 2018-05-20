@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//this file is similar to web.php, but for api routes.
+
+//we will use the api route that is created by default and modify it a bit:
+Route::middleware('auth:api')->group(function () {
+    //the group just makes it so that everything inside of this route will be wrapped wit hthe api token authentication we set up.
+
+    Route::get('/posts/unique', 'PostController@apiCheckUnique')->name('api.posts.unique');
+        //I like to keep my api requests in the same controller that they are manipulating
 });
