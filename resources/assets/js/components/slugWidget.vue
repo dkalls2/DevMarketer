@@ -18,8 +18,11 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
 }
 
 .slug{
-    background-color: yellow;
+    background-color:#fdfd96;
     padding: 3px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .input{
@@ -30,7 +33,16 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
     align-items: center;
     height: 28px;
         /* this is to make the text not move when we click the edit button. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+#slug-editor {
+    min-width: 142px;
+    max-width: 300px;
+}
+
 </style>
 
 
@@ -42,14 +54,15 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
         <!-- a component in vue.js can only have one div, therefore, everything must have a big wrapper.
         In this case, the big wrapper is the slug-widget one above. -->
         <div class="icon-wrapper wrapper">
-            <i class="fa fa-link"></i>
+            <i :class="icon"></i>
+            <!-- <i class="fa fa-link"></i> -->
         </div>
         
         <div class="url-wrapper wrapper">
-            <span class="root-url">{{url}}</span
-            ><span class="subdirectory-url">/{{subdirectory}}/</span
-            ><span class="slug" v-show="slug && !isEditing">{{slug}}</span
-            ><input type="text" name="slug" class="input is-small" v-show="isEditing" v-model="customSlug"/>
+            <span class="root-url">{{urlSanitized}}</span
+            ><span class="subdirectory-url">/{{subdirectorySanitized}}/</span
+            ><span class="slug" :title="slug" v-show="slug && !isEditing">{{slug}}</span
+            ><input type="text" name="slug" id ="slug-editor" class="input is-small" v-show="isEditing" v-model="customSlug" @keyup="adjustWidth" @keydown.esc.prevent @keydown.enter.prevent/>
                 <!-- this input field will only show when we are editing -->
                 <!-- The input will be tied to customSlug, the main value will be the normal slug.  
                 The event that we are triggering whenever the slug changes will then not be triggered when we are editing the customSlug.
@@ -61,7 +74,7 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
         </div>
 
         <div class="button-wrapper wrapper">
-            <button class="save-slug-button button is-small" v-show="!isEditing" @click.prevent="editSlug">Edit</button>
+            <button class="save-slug-button button is-small" v-show="!isEditing" @click.prevent="editSlug">{{slug.length < 1 ? 'Create New Slug' : 'Edit'}}</button>
             <!-- when people click the edit button, we want an input box to appear with the value of slug in the input box. 
             Then we want to change the edit button into a save button, so we can click to save it and then update the value of the slug.
             Also, once we changed the slug once, we don't want to update it from the title anymore.   
@@ -70,7 +83,22 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
 
             <!-- the @click is the vue way of saying v-on, or "on click" and prevent is an event modifer for v-on that is used to prevent propogation -->
 
-            <button class="save-slug-button button is-small" v-show="isEditing" @click.prevent="saveSlug">Save</button>
+            <b-dropdown hoverable v-show="!isEditing && slug.length > 1">
+                <button class="save-slug-button button is-small" slot="trigger">
+                    <span>Actions</span>
+                    <b-icon pack="fa" icon="caret-down"></b-icon>
+                </button>
+                <b-dropdown-item @click="copyToClipboard(fullUrl)" style="font-size: 0.8em;"><b-icon pack="fa" icon="copy" size="is-small"></b-icon> Copy Full Url</b-dropdown-item>
+                <b-dropdown-item @click="copyToClipboard(slug)" style="font-size: 0.8em;"><b-icon pack="fa" icon="copy" size="is-small"></b-icon> Copy Slug</b-dropdown-item>
+                <b-dropdown-item has-link style="font-size: 0.8em;">
+                    <a :href="fullUrl" target="_blank">
+                        <b-icon pack="fa" icon="link" size="is-small"></b-icon>
+                        Visit Url
+                    </a>
+                </b-dropdown-item>
+            </b-dropdown>
+            
+            <button class="save-slug-button button is-small" v-show="isEditing" @click.prevent="saveSlug">{{customSlug == slug ? 'Cancel' : 'Save'}}</button>
             <!-- by default we are not editing, so we do not show this button.  If we are editting, then we show this button. -->
 
             <button class="save-slug-button button is-small" v-show="isEditing" @click.prevent="resetEditing">Reset</button>
@@ -98,6 +126,10 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
                 //title is the title of the blog post.  We will need the title to calculate the slug.
                 type: String,
                 required: true
+            }, 
+            icon: {
+                type: String,
+                default: "fa fa-link"
             }
         },
         data: function(){
@@ -114,6 +146,22 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
             }
         },
         methods: {
+            adjustWidth: function(event) {
+                const val = event.target.value;
+                const key = event.key;
+                if (key === "Escape") {
+                    event.preventDefault();
+                    this.cancelEditing();
+                } else if (key === "Enter") {
+                    event.preventDefault();
+                    this.saveSlug();
+                } else {
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    ctx.font = "14px sans-serif";
+                    document.getElementById('slug-editor').style.width = Math.ceil(ctx.measureText(val).width+25)+"px";
+                }
+            },
             editSlug: function() {
                 this.customSlug = this.slug;
                     //when we edit the slug, it is going to set it equal to the normal slug, so it will look seamless.
@@ -124,6 +172,9 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
                     //if we wanted to see when someone edited the slug, we could add @edit ="someFunction" to the slug widget in create.blade.php
                 
                 this.isEditing = true;
+                
+                window.setTimeout(function () {document.getElementById('slug-editor').focus()}, 0); // must set timeout to wait for the thread to become available
+
             },
             saveSlug: function() {
                 //run ajax to see if new slug is unique
@@ -157,6 +208,8 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
                 //this setter method is so that we do not repeat code.  we only have to set this once.  newVal is the value we want to set the string equal to
                 //count is the second variable we want to add and we set it equal to 0 to start.
 
+                if (newVal === '') return '';
+                
                 //Slugify the newVal
                 let slug = Slug(newVal + (count > 0 ? `-${count}` : ''));
                     //this is a new variable that we can reference inside of this function.  This is the current slug we are working with, not the this.slug, which is the universal slug.
@@ -198,11 +251,35 @@ If we dont have the "scoped" in the element attribute, this styling will affect 
                         console.log(error);
                     });
                 }
-                
-                
-                    
-
-                
+            },
+            copyToClipboard: function(val) {
+                let temp = document.createElement('textarea');
+                temp.value = val;
+                document.body.appendChild(temp);
+                temp.select();
+                try {
+                    let success = document.execCommand('copy');
+                    let type = (success ? 'success' : 'warning');
+                    let msg = (success ? `Copied to Clipboard: ${val}` : "Copy failed, your browser may not support this feature");
+                    this.$emit('copied', type, msg, val);
+                    console.log("Copied to Clipboard:", val);
+                } catch (err) {
+                    this.$emit('copy-failed', val);
+                    console.log("Copy failed, your browser may not support this feature.");
+                    console.log("Attempted to copy:", val);
+                }
+                document.body.removeChild(temp);
+            }
+        },
+        computed: {
+            urlSanitized: function() {
+            return this.url.replace(/^\/|\/$/g, '');
+            },
+            subdirectorySanitized: function() {
+            return this.subdirectory.replace(/^\/|\/$/g, '');
+            },
+            fullUrl: function() {
+            return `${this.urlSanitized}/${this.subdirectorySanitized}/${this.slug}`;
             }
         },
         watch: {

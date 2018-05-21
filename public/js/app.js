@@ -33209,7 +33209,7 @@ exports = module.exports = __webpack_require__(43)(false);
 
 
 // module
-exports.push([module.i, "\n\n/* Instead of styling the vue component files in css, we can just stlye it here:\nWe can do scope styling here. that way all the stuff we style here is scoped to this component\nor any of the components that get created from this component.\nOnly the elements in this component will be styled and not others in the application. \n\nIf we dont have the \"scoped\" in the element attribute, this styling will affect everything like it does in css.\n*/\n.slug-widget[data-v-6319b834]{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: start;\n        -ms-flex-pack: start;\n            justify-content: flex-start;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.wrapper[data-v-6319b834]{\n    margin: 8px;\n}\n.slug[data-v-6319b834]{\n    background-color: yellow;\n    padding: 3px 5px;\n}\n.input[data-v-6319b834]{\n    width: auto;\n}\n.url-wrapper[data-v-6319b834]{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    height: 28px;\n        /* this is to make the text not move when we click the edit button. */\n}\n", ""]);
+exports.push([module.i, "\n\n/* Instead of styling the vue component files in css, we can just stlye it here:\nWe can do scope styling here. that way all the stuff we style here is scoped to this component\nor any of the components that get created from this component.\nOnly the elements in this component will be styled and not others in the application. \n\nIf we dont have the \"scoped\" in the element attribute, this styling will affect everything like it does in css.\n*/\n.slug-widget[data-v-6319b834]{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: start;\n        -ms-flex-pack: start;\n            justify-content: flex-start;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.wrapper[data-v-6319b834]{\n    margin: 8px;\n}\n.slug[data-v-6319b834]{\n    background-color:#fdfd96;\n    padding: 3px 5px;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.input[data-v-6319b834]{\n    width: auto;\n}\n.url-wrapper[data-v-6319b834]{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    height: 28px;\n        /* this is to make the text not move when we click the edit button. */\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n#slug-editor[data-v-6319b834] {\n    min-width: 142px;\n    max-width: 300px;\n}\n\n", ""]);
 
 // exports
 
@@ -33754,6 +33754,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -33772,6 +33800,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //title is the title of the blog post.  We will need the title to calculate the slug.
             type: String,
             required: true
+        },
+        icon: {
+            type: String,
+            default: "fa fa-link"
         }
     },
     data: function data() {
@@ -33788,6 +33820,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     methods: {
+        adjustWidth: function adjustWidth(event) {
+            var val = event.target.value;
+            var key = event.key;
+            if (key === "Escape") {
+                event.preventDefault();
+                this.cancelEditing();
+            } else if (key === "Enter") {
+                event.preventDefault();
+                this.saveSlug();
+            } else {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                ctx.font = "14px sans-serif";
+                document.getElementById('slug-editor').style.width = Math.ceil(ctx.measureText(val).width + 25) + "px";
+            }
+        },
         editSlug: function editSlug() {
             this.customSlug = this.slug;
             //when we edit the slug, it is going to set it equal to the normal slug, so it will look seamless.
@@ -33798,6 +33846,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //if we wanted to see when someone edited the slug, we could add @edit ="someFunction" to the slug widget in create.blade.php
 
             this.isEditing = true;
+
+            window.setTimeout(function () {
+                document.getElementById('slug-editor').focus();
+            }, 0); // must set timeout to wait for the thread to become available
         },
         saveSlug: function saveSlug() {
             //run ajax to see if new slug is unique
@@ -33833,8 +33885,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //this setter method is so that we do not repeat code.  we only have to set this once.  newVal is the value we want to set the string equal to
             //count is the second variable we want to add and we set it equal to 0 to start.
 
+            if (newVal === '') return '';
+
             //Slugify the newVal
-            var slug = Slug(newVal + (count > 0 ? '-' + count : ''));
+            var slug = Slug(newVal + (count > 0 ? "-" + count : ''));
             //this is a new variable that we can reference inside of this function.  This is the current slug we are working with, not the this.slug, which is the universal slug.
             //we are going to add count to the newVal to make it unique if it is not unique.  if count > 0 then add count, otherwise, just add empty string.
             //we need to add the `-${count}` around count because this will convert the number into a string.
@@ -33874,6 +33928,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log(error);
                 });
             }
+        },
+        copyToClipboard: function copyToClipboard(val) {
+            var temp = document.createElement('textarea');
+            temp.value = val;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                var success = document.execCommand('copy');
+                var type = success ? 'success' : 'warning';
+                var msg = success ? "Copied to Clipboard: " + val : "Copy failed, your browser may not support this feature";
+                this.$emit('copied', type, msg, val);
+                console.log("Copied to Clipboard:", val);
+            } catch (err) {
+                this.$emit('copy-failed', val);
+                console.log("Copy failed, your browser may not support this feature.");
+                console.log("Attempted to copy:", val);
+            }
+            document.body.removeChild(temp);
+        }
+    },
+    computed: {
+        urlSanitized: function urlSanitized() {
+            return this.url.replace(/^\/|\/$/g, '');
+        },
+        subdirectorySanitized: function subdirectorySanitized() {
+            return this.subdirectory.replace(/^\/|\/$/g, '');
+        },
+        fullUrl: function fullUrl() {
+            return this.urlSanitized + "/" + this.subdirectorySanitized + "/" + this.slug;
         }
     },
     watch: {
@@ -33904,12 +33987,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "slug-widget" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "icon-wrapper wrapper" }, [
+      _c("i", { class: _vm.icon })
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "url-wrapper wrapper" }, [
-      _c("span", { staticClass: "root-url" }, [_vm._v(_vm._s(_vm.url))]),
+      _c("span", { staticClass: "root-url" }, [
+        _vm._v(_vm._s(_vm.urlSanitized))
+      ]),
       _c("span", { staticClass: "subdirectory-url" }, [
-        _vm._v("/" + _vm._s(_vm.subdirectory) + "/")
+        _vm._v("/" + _vm._s(_vm.subdirectorySanitized) + "/")
       ]),
       _c(
         "span",
@@ -33922,7 +34009,8 @@ var render = function() {
               expression: "slug && !isEditing"
             }
           ],
-          staticClass: "slug"
+          staticClass: "slug",
+          attrs: { title: _vm.slug }
         },
         [_vm._v(_vm._s(_vm.slug))]
       ),
@@ -33942,9 +34030,30 @@ var render = function() {
           }
         ],
         staticClass: "input is-small",
-        attrs: { type: "text", name: "slug" },
+        attrs: { type: "text", name: "slug", id: "slug-editor" },
         domProps: { value: _vm.customSlug },
         on: {
+          keyup: _vm.adjustWidth,
+          keydown: [
+            function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "esc", 27, $event.key, "Escape")
+              ) {
+                return null
+              }
+              $event.preventDefault()
+            },
+            function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              $event.preventDefault()
+            }
+          ],
           input: function($event) {
             if ($event.target.composing) {
               return
@@ -33955,85 +34064,172 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "button-wrapper wrapper" }, [
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: !_vm.isEditing,
-              expression: "!isEditing"
+    _c(
+      "div",
+      { staticClass: "button-wrapper wrapper" },
+      [
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isEditing,
+                expression: "!isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.editSlug($event)
+              }
             }
+          },
+          [_vm._v(_vm._s(_vm.slug.length < 1 ? "Create New Slug" : "Edit"))]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-dropdown",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isEditing && _vm.slug.length > 1,
+                expression: "!isEditing && slug.length > 1"
+              }
+            ],
+            attrs: { hoverable: "" }
+          },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "save-slug-button button is-small",
+                attrs: { slot: "trigger" },
+                slot: "trigger"
+              },
+              [
+                _c("span", [_vm._v("Actions")]),
+                _vm._v(" "),
+                _c("b-icon", { attrs: { pack: "fa", icon: "caret-down" } })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                on: {
+                  click: function($event) {
+                    _vm.copyToClipboard(_vm.fullUrl)
+                  }
+                }
+              },
+              [
+                _c("b-icon", {
+                  attrs: { pack: "fa", icon: "copy", size: "is-small" }
+                }),
+                _vm._v(" Copy Full Url")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                on: {
+                  click: function($event) {
+                    _vm.copyToClipboard(_vm.slug)
+                  }
+                }
+              },
+              [
+                _c("b-icon", {
+                  attrs: { pack: "fa", icon: "copy", size: "is-small" }
+                }),
+                _vm._v(" Copy Slug")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                attrs: { "has-link": "" }
+              },
+              [
+                _c(
+                  "a",
+                  { attrs: { href: _vm.fullUrl, target: "_blank" } },
+                  [
+                    _c("b-icon", {
+                      attrs: { pack: "fa", icon: "link", size: "is-small" }
+                    }),
+                    _vm._v("\n                    Visit Url\n                ")
+                  ],
+                  1
+                )
+              ]
+            )
           ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.editSlug($event)
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isEditing,
+                expression: "isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.saveSlug($event)
+              }
             }
-          }
-        },
-        [_vm._v("Edit")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.isEditing,
-              expression: "isEditing"
+          },
+          [_vm._v(_vm._s(_vm.customSlug == _vm.slug ? "Cancel" : "Save"))]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isEditing,
+                expression: "isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.resetEditing($event)
+              }
             }
-          ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.saveSlug($event)
-            }
-          }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.isEditing,
-              expression: "isEditing"
-            }
-          ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.resetEditing($event)
-            }
-          }
-        },
-        [_vm._v("Reset")]
-      )
-    ])
+          },
+          [_vm._v("Reset")]
+        )
+      ],
+      1
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "icon-wrapper wrapper" }, [
-      _c("i", { staticClass: "fa fa-link" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
